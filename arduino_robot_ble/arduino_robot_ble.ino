@@ -1,14 +1,19 @@
 #include <SoftwareSerial.h>
 
+# define FORDWARD    'F'
+# define BACKWARD    'B'
+# define LEFT        'L'
+# define RIGHT       'R'
+#define PAUSE        'P'
 // Motor A
-#define MOTOR_ENA    10
-#define MOTOR_IN1     2
-#define MOTOR_IN2     3
+//#define MOTOR_ENA    10
+#define MOTOR_IN1     8
+#define MOTOR_IN2     9
 
 // Motor B
-#define MOTOR_IN3     5
-#define MOTOR_IN4     6
-#define MOTOR_ENB     9
+#define MOTOR_IN3    10
+#define MOTOR_IN4    11
+//#define MOTOR_ENB     9
 
 //BLE
 #define BLE_rxPin     4
@@ -18,12 +23,15 @@
 
 
 SoftwareSerial BT (BLE_rxPin,BLE_txPin); 
-
+void izquierda(void);
+void derecha(void);
+void adelante(void);
+void atras(void);
 
 void setup() {
 
-  pinMode (MOTOR_ENA, OUTPUT);
-  pinMode (MOTOR_ENB, OUTPUT);
+ // pinMode (MOTOR_ENA, OUTPUT);
+  //pinMode (MOTOR_ENB, OUTPUT);
   pinMode (MOTOR_IN1, OUTPUT);
   pinMode (MOTOR_IN2, OUTPUT);
   pinMode (MOTOR_IN3, OUTPUT);
@@ -40,13 +48,44 @@ void setup() {
 
   // Power on BLE
   Serial.println("Levantando el modulo HC-05");
-  digitalWrite(VccPin, HIGH);
+  digitalWrite(BLE_VccPin, HIGH);
 }
 
 void loop() {
   if(BT.available())    // Si llega un dato por el puerto BT se envía al monitor serial
   {
-    Serial.write(BT.read());
+    char cmd = BT.read();
+    //Serial.write(cmd);
+    switch(cmd)
+    {
+      case FORDWARD:
+      {
+        adelante();
+      }
+      break;
+      case BACKWARD:
+      {
+        atras();
+      }
+      break;
+      case LEFT:
+      {
+        izquierda();
+      }
+      break;
+      case RIGHT:
+      {
+        derecha();
+      }
+      break;
+      case PAUSE:
+      {
+        parar();
+      }
+      break;
+      
+      
+    }
   }
 
     if(Serial.available())  // Si llega un dato por el monitor serial se envía al puerto BT
@@ -59,63 +98,69 @@ void loop() {
 
 
 
-void Adelante ()
+void adelante(void)
 {
+   Serial.println("adelante");
  //Direccion motor A
- digitalWrite(IN1, HIGH);
- digitalWrite(IN2, LOW);
- analogWrite(ENA, 255); //Velocidad motor A
+ digitalWrite(MOTOR_IN1, HIGH);
+ digitalWrite(MOTOR_IN2, LOW);
+ //analogWrite(ENA, 255); //Velocidad motor A
  //Direccion motor B
- digitalWrite(IN3, HIGH);
- digitalWrite(IN4, LOW);
- analogWrite(ENB, 255); //Velocidad motor B
+ digitalWrite(MOTOR_IN3, HIGH);
+ digitalWrite(MOTOR_IN4, LOW);
+ //analogWrite(ENB, 255); //Velocidad motor B
 }
 
-void Atras ()
+void atras(void)
 {
+   Serial.println("atras");
+
  //Direccion motor A
- digitalWrite(IN1, LOW);
- digitalWrite(IN2, HIGH);
- analogWrite(ENA, 128); //Velocidad motor A
+ digitalWrite(MOTOR_IN1, LOW);
+ digitalWrite(MOTOR_IN2, HIGH);
+ //analogWrite(ENA, 128); //Velocidad motor A
  //Direccion motor B
- digitalWrite(IN3, LOW);
- digitalWrite(IN4, HIGH);
- analogWrite(ENB, 128); //Velocidad motor B
+ digitalWrite(MOTOR_IN3, LOW);
+ digitalWrite(MOTOR_IN4, HIGH);
+ //analogWrite(ENB, 128); //Velocidad motor B
 }
 
-void Derecha ()
+void derecha(void)
 {
+   Serial.println("derecha");
  //Direccion motor A
- digitalWrite(IN1, HIGH);
- digitalWrite(IN2, LOW);
- analogWrite(ENA, 200); //Velocidad motor A
+ digitalWrite(MOTOR_IN1, HIGH);
+ digitalWrite(MOTOR_IN2, LOW);
+ //analogWrite(ENA, 200); //Velocidad motor A
  //Direccion motor B
- digitalWrite(IN3, LOW);
- digitalWrite(IN4, HIGH);
- analogWrite(ENB, 100); //Velocidad motor A
+ digitalWrite(MOTOR_IN3, LOW);
+ digitalWrite(MOTOR_IN4, HIGH);
+ //analogWrite(ENB, 100); //Velocidad motor A
 }
 
-void Izquierda ()
+void izquierda(void)
 {
+   Serial.println("izquierda");
  //Direccion motor A
- digitalWrite(IN1, LOW);
- digitalWrite(IN2, HIGH);
- analogWrite(ENA, 50); //Velocidad motor A
+ digitalWrite(MOTOR_IN1, LOW);
+ digitalWrite(MOTOR_IN2, HIGH);
+ //analogWrite(ENA, 50); //Velocidad motor A
  //Direccion motor B
- digitalWrite(IN3, HIGH);
- digitalWrite(IN4, LOW);
- analogWrite(ENB, 150); //Velocidad motor A
+ digitalWrite(MOTOR_IN3, HIGH);
+ digitalWrite(MOTOR_IN4, LOW);
+ //analogWrite(ENB, 150); //Velocidad motor A
 }
 
-void Parar ()
+void parar(void)
 {
+  Serial.println("parar");
  //Direccion motor A
- digitalWrite(IN1, LOW);
- digitalWrite(IN2, LOW);
- analogWrite(ENA, 0); //Velocidad motor A
+ digitalWrite(MOTOR_IN1, LOW);
+ digitalWrite(MOTOR_IN2, LOW);
+ //analogWrite(ENA, 0); //Velocidad motor A
  //Direccion motor B
- digitalWrite(IN3, LOW);
- digitalWrite(IN4, LOW);
- analogWrite(ENB, 0); //Velocidad motor A
+ digitalWrite(MOTOR_IN3, LOW);
+ digitalWrite(MOTOR_IN4, LOW);
+ //analogWrite(ENB, 0); //Velocidad motor A
 }
 
