@@ -101,47 +101,7 @@ void loop() {
 void adelante(void)
 {
    Serial.println("adelante");
- //Direccion motor A
- digitalWrite(MOTOR_IN1, HIGH);
- digitalWrite(MOTOR_IN2, LOW);
- //analogWrite(ENA, 255); //Velocidad motor A
- //Direccion motor B
- digitalWrite(MOTOR_IN3, HIGH);
- digitalWrite(MOTOR_IN4, LOW);
- //analogWrite(ENB, 255); //Velocidad motor B
-}
-
-void atras(void)
-{
-   Serial.println("atras");
-
- //Direccion motor A
- digitalWrite(MOTOR_IN1, LOW);
- digitalWrite(MOTOR_IN2, HIGH);
- //analogWrite(ENA, 128); //Velocidad motor A
- //Direccion motor B
- digitalWrite(MOTOR_IN3, LOW);
- digitalWrite(MOTOR_IN4, HIGH);
- //analogWrite(ENB, 128); //Velocidad motor B
-}
-
-void derecha(void)
-{
-   Serial.println("derecha");
- //Direccion motor A
- digitalWrite(MOTOR_IN1, HIGH);
- digitalWrite(MOTOR_IN2, LOW);
- //analogWrite(ENA, 200); //Velocidad motor A
- //Direccion motor B
- digitalWrite(MOTOR_IN3, LOW);
- digitalWrite(MOTOR_IN4, HIGH);
- //analogWrite(ENB, 100); //Velocidad motor A
-}
-
-void izquierda(void)
-{
-   Serial.println("izquierda");
- //Direccion motor A
+    //Direccion motor A
  digitalWrite(MOTOR_IN1, LOW);
  digitalWrite(MOTOR_IN2, HIGH);
  //analogWrite(ENA, 50); //Velocidad motor A
@@ -149,6 +109,48 @@ void izquierda(void)
  digitalWrite(MOTOR_IN3, HIGH);
  digitalWrite(MOTOR_IN4, LOW);
  //analogWrite(ENB, 150); //Velocidad motor A
+ 
+}
+
+void atras(void)
+{
+  Serial.println("atras");
+
+  //Direccion motor A
+  digitalWrite(MOTOR_IN1, HIGH);
+  digitalWrite(MOTOR_IN2, LOW);
+  //Direccion motor B
+  digitalWrite(MOTOR_IN3, LOW);
+  digitalWrite(MOTOR_IN4, HIGH);
+ 
+}
+
+void derecha(void)
+{
+  Serial.println("derecha");
+ 
+  //Direccion motor A
+  digitalWrite(MOTOR_IN1, LOW);
+  digitalWrite(MOTOR_IN2, HIGH);
+  //analogWrite(ENA, 128); //Velocidad motor A
+  //Direccion motor B
+  digitalWrite(MOTOR_IN3, LOW);
+  digitalWrite(MOTOR_IN4, HIGH);
+ 
+}
+
+void izquierda(void)
+{
+   Serial.println("izquierda");
+
+  //Direccion motor A
+  digitalWrite(MOTOR_IN1, HIGH);
+  digitalWrite(MOTOR_IN2, LOW);
+ 
+  //Direccion motor B
+  digitalWrite(MOTOR_IN3, HIGH);
+  digitalWrite(MOTOR_IN4, LOW);
+
 }
 
 void parar(void)
