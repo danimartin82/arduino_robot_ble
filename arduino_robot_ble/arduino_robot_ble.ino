@@ -52,7 +52,7 @@ void setup() {
 }
 
 void loop() {
-  if(BT.available())    // Si llega un dato por el puerto BT se envía al monitor serial
+  if(BT.available())
   {
     char cmd = BT.read();
     //Serial.write(cmd);
@@ -88,7 +88,7 @@ void loop() {
     }
   }
 
-    if(Serial.available())  // Si llega un dato por el monitor serial se envía al puerto BT
+    if(Serial.available())
   {
 
     BT.write(Serial.read());
@@ -101,27 +101,28 @@ void loop() {
 void adelante(void)
 {
    Serial.println("adelante");
-    //Direccion motor A
- digitalWrite(MOTOR_IN1, LOW);
- digitalWrite(MOTOR_IN2, HIGH);
- //analogWrite(ENA, 50); //Velocidad motor A
- //Direccion motor B
- digitalWrite(MOTOR_IN3, HIGH);
- digitalWrite(MOTOR_IN4, LOW);
- //analogWrite(ENB, 150); //Velocidad motor A
- 
-}
-
-void atras(void)
-{
-  Serial.println("atras");
-
+   
   //Direccion motor A
   digitalWrite(MOTOR_IN1, HIGH);
   digitalWrite(MOTOR_IN2, LOW);
   //Direccion motor B
   digitalWrite(MOTOR_IN3, LOW);
   digitalWrite(MOTOR_IN4, HIGH);
+
+
+}
+
+void atras(void)
+{
+  Serial.println("atras");
+    //Direccion motor A
+  digitalWrite(MOTOR_IN1, LOW);
+  digitalWrite(MOTOR_IN2, HIGH);
+  //analogWrite(ENA, 50); //Velocidad motor A
+  //Direccion motor B
+  digitalWrite(MOTOR_IN3, HIGH);
+  digitalWrite(MOTOR_IN4, LOW);
+ //analogWrite(ENB, 150); //Velocidad motor A
  
 }
 
@@ -133,9 +134,10 @@ void derecha(void)
   digitalWrite(MOTOR_IN1, LOW);
   digitalWrite(MOTOR_IN2, HIGH);
   //analogWrite(ENA, 128); //Velocidad motor A
-  //Direccion motor B
+  
+  //Paramos motor B
   digitalWrite(MOTOR_IN3, LOW);
-  digitalWrite(MOTOR_IN4, HIGH);
+  digitalWrite(MOTOR_IN4, LOW);
  
 }
 
@@ -143,8 +145,8 @@ void izquierda(void)
 {
    Serial.println("izquierda");
 
-  //Direccion motor A
-  digitalWrite(MOTOR_IN1, HIGH);
+  //Paramos motor A
+  digitalWrite(MOTOR_IN1, LOW);
   digitalWrite(MOTOR_IN2, LOW);
  
   //Direccion motor B
