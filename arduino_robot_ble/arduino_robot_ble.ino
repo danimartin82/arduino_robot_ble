@@ -30,8 +30,6 @@ void atras(void);
 
 void setup() {
 
- // pinMode (MOTOR_ENA, OUTPUT);
-  //pinMode (MOTOR_ENB, OUTPUT);
   pinMode (MOTOR_IN1, OUTPUT);
   pinMode (MOTOR_IN2, OUTPUT);
   pinMode (MOTOR_IN3, OUTPUT);
@@ -102,10 +100,11 @@ void adelante(void)
 {
    Serial.println("adelante");
    
-  //Direccion motor A
+  // Adelante motor A
   digitalWrite(MOTOR_IN1, HIGH);
   digitalWrite(MOTOR_IN2, LOW);
-  //Direccion motor B
+  
+  // Adelante motor B
   digitalWrite(MOTOR_IN3, LOW);
   digitalWrite(MOTOR_IN4, HIGH);
 
@@ -115,14 +114,14 @@ void adelante(void)
 void atras(void)
 {
   Serial.println("atras");
-    //Direccion motor A
+
+  // Atras motor A
   digitalWrite(MOTOR_IN1, LOW);
   digitalWrite(MOTOR_IN2, HIGH);
-  //analogWrite(ENA, 50); //Velocidad motor A
-  //Direccion motor B
+
+  // Atras motor B
   digitalWrite(MOTOR_IN3, HIGH);
   digitalWrite(MOTOR_IN4, LOW);
- //analogWrite(ENB, 150); //Velocidad motor A
  
 }
 
@@ -130,10 +129,9 @@ void derecha(void)
 {
   Serial.println("derecha");
  
-  //Direccion motor A
-  digitalWrite(MOTOR_IN1, LOW);
-  digitalWrite(MOTOR_IN2, HIGH);
-  //analogWrite(ENA, 128); //Velocidad motor A
+  //Adelante motor A
+  digitalWrite(MOTOR_IN1, HIGH);
+  digitalWrite(MOTOR_IN2, LOW);
   
   //Paramos motor B
   digitalWrite(MOTOR_IN3, LOW);
@@ -149,22 +147,23 @@ void izquierda(void)
   digitalWrite(MOTOR_IN1, LOW);
   digitalWrite(MOTOR_IN2, LOW);
  
-  //Direccion motor B
-  digitalWrite(MOTOR_IN3, HIGH);
-  digitalWrite(MOTOR_IN4, LOW);
+  //Adelante motor B
+  digitalWrite(MOTOR_IN3, LOW);
+  digitalWrite(MOTOR_IN4, HIGH);
 
 }
 
 void parar(void)
 {
   Serial.println("parar");
- //Direccion motor A
+
+ //Paramos motor A
  digitalWrite(MOTOR_IN1, LOW);
  digitalWrite(MOTOR_IN2, LOW);
- //analogWrite(ENA, 0); //Velocidad motor A
- //Direccion motor B
+
+ //Paramos motor B
  digitalWrite(MOTOR_IN3, LOW);
  digitalWrite(MOTOR_IN4, LOW);
- //analogWrite(ENB, 0); //Velocidad motor A
+
 }
 
