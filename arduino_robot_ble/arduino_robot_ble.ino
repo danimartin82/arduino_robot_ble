@@ -10,9 +10,10 @@
 *  TX -> PIN 5
 *  EN -> PIN 2
 * 
-
+* Ultrasonidos
 * Echo -> PIN 12
 * Trigger -> PIN 13
+*
 *******************************************************************************/
 
 #include <SoftwareSerial.h>
@@ -75,7 +76,7 @@ void loop() {
   Serial.print("Distancia: ");
   Serial.println(distancia);
   Serial.println(direcion);
-  if ((direcion == FORDWARD) && (distancia < 20))
+  if (((direcion == FORDWARD) || (direcion == LEFT) || (direcion == RIGHT)) && (distancia < 20))
   {
     parar();
   }
