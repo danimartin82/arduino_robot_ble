@@ -17,6 +17,7 @@
 *******************************************************************************/
 
 #include <SoftwareSerial.h>
+#include <DFRobotDFPlayerMini.h>
 
 // BLE Commands
 # define FORDWARD    'F'
@@ -42,12 +43,20 @@
 #define EchoPin      12
 #define TriggerPin   13
 
+// MP3
+#define MP3_RX       6
+#define MP3_TX       7
 
+
+SoftwareSerial DFPlayerSerial(MP3_RX, MP3_TX);
 SoftwareSerial BT (BLE_rxPin,BLE_txPin); 
+
 void izquierda(void);
 void derecha(void);
 void adelante(void);
 void atras(void);
+
+DFRobotDFPlayerMini myDFPlayer;
 
 void setup() {
 
@@ -57,13 +66,27 @@ void setup() {
   pinMode (MOTOR_IN4, OUTPUT);
   pinMode(BLE_enablePin, OUTPUT);
 
+  Serial.begin(9600);
+  BT.begin(9600);
+  DFPlayerSerial.begin(9600);
+
   // Enable BLE
   Serial.println("Levantando el modulo HC-05");
   digitalWrite(BLE_enablePin, HIGH);
   delay(500);
 
-  Serial.begin(9600);
-  BT.begin(9600);
+
+
+
+ if (!myDFPlayer.begin(DFPlayerSerial,true,true)) {  //Use serial to communicate with mp3.
+    Serial.println(F("Unable to begin:"));
+    Serial.println(F("1.Please recheck the connection!"));
+    Serial.println(F("2.Please insert the SD card!"));
+  }
+  Serial.println(F("DFPlayer Mini online."));
+  
+  myDFPlayer.volume(10);  //Set volume value. From 0 to 30
+
 
 }
 char cmd;
@@ -73,12 +96,13 @@ int distancia;
 void loop() {
 
   distancia = ping();
-  Serial.print("Distancia: ");
-  Serial.println(distancia);
-  Serial.println(direcion);
+  //Serial.print("Distancia: ");
+  //Serial.println(distancia);
+  //Serial.println(direcion);
   if (((direcion == FORDWARD) || (direcion == LEFT) || (direcion == RIGHT)) && (distancia < 20))
   {
     parar();
+     myDFPlayer.play(1);  //Play the first mp3
   }
 
 
@@ -86,7 +110,7 @@ void loop() {
   {
     cmd = BT.read();
      Serial.println("cambio cmd");
-    //Serial.write(cmd);
+    Serial.write(cmd);
 
     switch(cmd)
     {
