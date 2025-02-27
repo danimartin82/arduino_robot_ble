@@ -14,6 +14,10 @@
 * Echo -> PIN 12
 * Trigger -> PIN 13
 *
+* Mp3 player
+* MP3_RX -> Pin 6
+* MP3_TX -> Pin 7
+
 *******************************************************************************/
 
 #include <SoftwareSerial.h>
@@ -48,15 +52,23 @@
 #define MP3_TX       7
 
 
-SoftwareSerial DFPlayerSerial(MP3_RX, MP3_TX);
-SoftwareSerial BT (BLE_rxPin,BLE_txPin); 
 
 void izquierda(void);
 void derecha(void);
 void adelante(void);
 void atras(void);
+void printDetail(uint8_t type, int value);
 
+
+SoftwareSerial DFPlayerSerial(MP3_RX, MP3_TX);
+SoftwareSerial BT (BLE_rxPin,BLE_txPin); 
 DFRobotDFPlayerMini myDFPlayer;
+char cmd;
+char direcion;
+int distancia;
+bool audio_flag;
+
+
 
 void setup() {
 
@@ -77,7 +89,6 @@ void setup() {
 
 
 
-
  if (!myDFPlayer.begin(DFPlayerSerial,true,true)) {  //Use serial to communicate with mp3.
     Serial.println(F("Unable to begin:"));
     Serial.println(F("1.Please recheck the connection!"));
@@ -85,32 +96,41 @@ void setup() {
   }
   Serial.println(F("DFPlayer Mini online."));
   
-  myDFPlayer.volume(10);  //Set volume value. From 0 to 30
+  //myDFPlayer.volume(10);  //Set volume value. From 0 to 30
+
+  myDFPlayer.play(1);  //Play the first mp3
+  // Only one software serial can listen at a time
+  BT.listen();
 
 
 }
-char cmd;
-char direcion;
-int distancia;
 
 void loop() {
 
+
   distancia = ping();
-  //Serial.print("Distancia: ");
-  //Serial.println(distancia);
-  //Serial.println(direcion);
+
   if (((direcion == FORDWARD) || (direcion == LEFT) || (direcion == RIGHT)) && (distancia < 20))
   {
     parar();
-     myDFPlayer.play(1);  //Play the first mp3
+    //DFPlayerSerial.listen();
+    if(audio_flag == false)
+    {
+      audio_flag = true;
+      myDFPlayer.play(1);
+    }
+    
+  }
+  else
+  {
+    audio_flag = false;
   }
 
-
+  BT.listen();
   if(BT.available())
   {
     cmd = BT.read();
-     Serial.println("cambio cmd");
-    Serial.write(cmd);
+    
 
     switch(cmd)
     {
@@ -149,7 +169,6 @@ void loop() {
       break;
       case PAUSE:
       {
-        direcion = cmd;
         parar();
       }
       break;
@@ -172,8 +191,8 @@ void loop() {
 
 void adelante(void)
 {
-   Serial.println("adelante");
-   
+  Serial.println("adelante");
+  
   // Adelante motor A
   digitalWrite(MOTOR_IN1, HIGH);
   digitalWrite(MOTOR_IN2, LOW);
@@ -258,3 +277,65 @@ int ping(void) {
   return distanceCm;
 }
 
+
+void printDetail(uint8_t type, int value){
+  switch (type) {
+    case TimeOut:
+      Serial.println(F("Time Out!"));
+      break;
+    case WrongStack:
+      Serial.println(F("Stack Wrong!"));
+      break;
+    case DFPlayerCardInserted:
+      Serial.println(F("Card Inserted!"));
+      break;
+    case DFPlayerCardRemoved:
+      Serial.println(F("Card Removed!"));
+      break;
+    case DFPlayerCardOnline:
+      Serial.println(F("Card Online!"));
+      break;
+    case DFPlayerUSBInserted:
+      Serial.println("USB Inserted!");
+      break;
+    case DFPlayerUSBRemoved:
+      Serial.println("USB Removed!");
+      break;
+    case DFPlayerPlayFinished:
+      Serial.print(F("Number:"));
+      Serial.print(value);
+      Serial.println(F(" Play Finished!"));
+      break;
+    case DFPlayerError:
+      Serial.print(F("DFPlayerError:"));
+      switch (value) {
+        case Busy:
+          Serial.println(F("Card not found"));
+          break;
+        case Sleeping:
+          Serial.println(F("Sleeping"));
+          break;
+        case SerialWrongStack:
+          Serial.println(F("Get Wrong Stack"));
+          break;
+        case CheckSumNotMatch:
+          Serial.println(F("Check Sum Not Match"));
+          break;
+        case FileIndexOut:
+          Serial.println(F("File Index Out of Bound"));
+          break;
+        case FileMismatch:
+          Serial.println(F("Cannot Find File"));
+          break;
+        case Advertise:
+          Serial.println(F("In Advertise"));
+          break;
+        default:
+          break;
+      }
+      break;
+    default:
+      break;
+  }
+
+}
