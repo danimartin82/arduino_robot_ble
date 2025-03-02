@@ -10,11 +10,11 @@
 *  TX -> PIN 5
 *  EN -> PIN 2
 * 
-* Ultrasonidos
+* HC-SR04 Ultrasonidos
 * Echo -> PIN 12
 * Trigger -> PIN 13
 *
-* Mp3 player
+* DFPlayer Mini (Mp3)
 * MP3_RX -> Pin 6
 * MP3_TX -> Pin 7
 
@@ -98,7 +98,6 @@ void setup() {
   
   //myDFPlayer.volume(10);  //Set volume value. From 0 to 30
 
-  myDFPlayer.play(1);  //Play the first mp3
   // Only one software serial can listen at a time
   BT.listen();
 
@@ -112,12 +111,15 @@ void loop() {
 
   if (((direcion == FORDWARD) || (direcion == LEFT) || (direcion == RIGHT)) && (distancia < 20))
   {
+    direcion = cmd;
     parar();
-    //DFPlayerSerial.listen();
+    
     if(audio_flag == false)
     {
       audio_flag = true;
+      DFPlayerSerial.listen();
       myDFPlayer.play(1);
+      BT.listen();
     }
     
   }
@@ -126,7 +128,6 @@ void loop() {
     audio_flag = false;
   }
 
-  BT.listen();
   if(BT.available())
   {
     cmd = BT.read();
